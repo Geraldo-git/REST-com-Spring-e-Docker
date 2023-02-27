@@ -2,8 +2,8 @@ package br.com.zazix.demo.controllers;
 
 import br.com.zazix.demo.model.Person;
 import br.com.zazix.demo.services.PersonService;
-import jakarta.validation.constraints.FutureOrPresent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,8 +35,9 @@ public class PersonController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 
