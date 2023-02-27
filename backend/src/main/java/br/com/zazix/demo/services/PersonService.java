@@ -1,5 +1,6 @@
 package br.com.zazix.demo.services;
 
+import br.com.zazix.demo.exceptions.ResourceNotFoundException;
 import br.com.zazix.demo.model.Person;
 import br.com.zazix.demo.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,18 +13,33 @@ import java.util.logging.Logger;
 @Service
 public class PersonService {
 
-    private final AtomicLong counter = new AtomicLong();
-    private Logger logger = Logger.getLogger(PersonService.class.getName());
-
     @Autowired
     PersonRepository repository;
 
     public List<Person> findAll() {
-        return null;
+        return repository.findAll();
     }
 
-    public Person findById(String id) {
+    public Person findById(Long id) {
 
-        return null;
+        return repository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Id não encontrado"));
+    }
+
+    public Person create(Person person) {
+
+        return repository.save(person);
+    }
+
+    public Person update(Person person) {
+        var entity = repository.findById(person.getId()).orElseThrow(() ->
+                new ResourceNotFoundException("Id não encontrado"));
+        return repository.save(person);
+    }
+
+    public void delete(Long id) {
+        var entity = repository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Id não encontrado"));
+        repository.deleteById(id);
     }
 }
