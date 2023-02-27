@@ -1,6 +1,7 @@
 package br.com.zazix.demo.controllers;
 
 import br.com.zazix.demo.data.vo.v1.PersonVo;
+import br.com.zazix.demo.data.vo.v2.PersonVoV2;
 import br.com.zazix.demo.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +30,17 @@ public class PersonController {
         return service.create(personVo);
     }
 
+    @PostMapping(value = "/v2")
+    public PersonVoV2 createV2(@RequestBody PersonVoV2 person) {
+
+        return service.createV2(person);
+    }
+
+
     @PutMapping(value = "/{id}")
-    public PersonVo update(@PathVariable Long id, @RequestBody PersonVo personVo) {
-        return service.update(personVo);
+    public PersonVo update(@PathVariable Long id, @RequestBody PersonVo person) {
+
+        return service.update(person);
     }
 
     @DeleteMapping(value = "/{id}")
