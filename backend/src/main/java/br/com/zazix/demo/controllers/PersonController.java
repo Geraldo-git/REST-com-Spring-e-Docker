@@ -1,6 +1,6 @@
 package br.com.zazix.demo.controllers;
 
-import br.com.zazix.demo.model.Person;
+import br.com.zazix.demo.data.vo.v1.PersonVo;
 import br.com.zazix.demo.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,23 +15,23 @@ public class PersonController {
     private PersonService service;
 
     @GetMapping(value = "/{id}")
-    public Person findById(@PathVariable Long id) {
+    public PersonVo findById(@PathVariable Long id) {
         return service.findById(id);
     }
 
     @GetMapping
-    public List<Person> findAll() {
+    public List<PersonVo> findAll() {
         return service.findAll();
     }
 
     @PostMapping()
-    public Person create(@RequestBody Person person) {
-        return service.create(person);
+    public PersonVo create(@RequestBody PersonVo personVo) {
+        return service.create(personVo);
     }
 
     @PutMapping(value = "/{id}")
-    public Person update(@PathVariable Long id, @RequestBody Person person) {
-        return service.update(person);
+    public PersonVo update(@PathVariable Long id, @RequestBody PersonVo personVo) {
+        return service.update(personVo);
     }
 
     @DeleteMapping(value = "/{id}")

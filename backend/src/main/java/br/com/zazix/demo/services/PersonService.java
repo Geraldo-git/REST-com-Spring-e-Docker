@@ -1,14 +1,14 @@
 package br.com.zazix.demo.services;
 
+import br.com.zazix.demo.data.vo.v1.PersonVo;
 import br.com.zazix.demo.exceptions.ResourceNotFoundException;
+import br.com.zazix.demo.mapper.DozerMapper;
 import br.com.zazix.demo.model.Person;
 import br.com.zazix.demo.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.logging.Logger;
 
 @Service
 public class PersonService {
@@ -16,25 +16,27 @@ public class PersonService {
     @Autowired
     PersonRepository repository;
 
-    public List<Person> findAll() {
-        return repository.findAll();
+    public List<PersonVo> findAll() {
+
+        return DozerMapper.parseListObject(repository.findAll(), PersonVo.class);
     }
 
-    public Person findById(Long id) {
-
-        return repository.findById(id).orElseThrow(() ->
+    public PersonVo findById(Long id) {
+        var entity = repository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Id não encontrado"));
+        return DozerMapper.parseObject(entity, PersonVo.class);
     }
 
-    public Person create(Person person) {
-
-        return repository.save(person);
+    public PersonVo create(PersonVo personVo) {
+        var entity = DozerMapper.parseObject(personVo, Person.class);
+        return DozerMapper.parseObject(repository.save(entity), PersonVo.class);
     }
 
-    public Person update(Person person) {
-        var entity = repository.findById(person.getId()).orElseThrow(() ->
+    public PersonVo update(PersonVo personVo) {
+        var entity = repository.findById(personVo.getId()).orElseThrow(() ->
                 new ResourceNotFoundException("Id não encontrado"));
-        return repository.save(person);
+        return DozerMapper.parseObject(repository.save(entity), PersonVo.class);
+
     }
 
     public void delete(Long id) {
